@@ -16,12 +16,12 @@ const categoryCtrl = {
             // only admin can create , delete and update category
             const {name} = req.body;
             const category = await Category.findOne({name})
-            if(category) return res.status(400).json({msg: "This category already exists."})
+            if(category) return res.status(400).json({msg: "Ця категорія уже існує"})
 
             const newCategory = new Category({name})
 
             await newCategory.save()
-            res.json({msg: "Created a category"})
+            res.json({msg: "Категорію створено"})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -30,11 +30,11 @@ const categoryCtrl = {
         try {
             const products = await Products.findOne({category: req.params.id})
             if(products) return res.status(400).json({
-                msg: "Please delete all products with a relationship."
+                msg: "Спершу видаліть всі продукти з даною категорією"
             })
 
             await Category.findByIdAndDelete(req.params.id)
-            res.json({msg: "Deleted a Category"})
+            res.json({msg: "Категорію видалено"})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -44,7 +44,7 @@ const categoryCtrl = {
             const {name} = req.body;
             await Category.findOneAndUpdate({_id: req.params.id}, {name})
 
-            res.json({msg: "Updated a category"})
+            res.json({msg: "Категорію відредаговано"})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }

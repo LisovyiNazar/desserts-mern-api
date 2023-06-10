@@ -66,18 +66,18 @@ const productCtrl = {
     createProduct: async(req, res) =>{
         try {
             const {product_id, title, price, description, content, images, category} = req.body;
-            if(!images) return res.status(400).json({msg: "No image upload"})
+            if(!images) return res.status(400).json({msg: "Загрузітьь фотографію продукта"})
 
             const product = await Products.findOne({product_id})
             if(product)
-                return res.status(400).json({msg: "This product already exists."})
+                return res.status(400).json({msg: "Цей продукт вже існує."})
 
             const newProduct = new Products({
                 product_id, title: title.toLowerCase(), price, description, content, images, category
             })
 
             await newProduct.save()
-            res.json({msg: "Created a product"})
+            res.json({msg: "Продукт створено"})
 
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -86,7 +86,7 @@ const productCtrl = {
     deleteProduct: async(req, res) =>{
         try {
             await Products.findByIdAndDelete(req.params.id)
-            res.json({msg: "Deleted a Product"})
+            res.json({msg: "Продукт видалено"})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -94,13 +94,13 @@ const productCtrl = {
     updateProduct: async(req, res) =>{
         try {
             const {title, price, description, content, images, category} = req.body;
-            if(!images) return res.status(400).json({msg: "No image upload"})
+            if(!images) return res.status(400).json({msg: "Загрузітьь фотографію продукта"})
 
             await Products.findOneAndUpdate({_id: req.params.id}, {
                 title: title.toLowerCase(), price, description, content, images, category
             })
 
-            res.json({msg: "Updated a Product"})
+            res.json({msg: "Продукт відредаговано"})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
