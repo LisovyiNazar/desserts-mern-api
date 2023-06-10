@@ -26,14 +26,16 @@ const userCtrl = {
             // Then create jsonwebtoken to authentication
             const accesstoken = createAccessToken({id: newUser._id})
             const refreshtoken = createRefreshToken({id: newUser._id})
-
-            res.cookie('refreshtoken', refreshtoken, {
+            
+            res.
+            status(200).
+            cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
                 path: '/user/refresh_token',
                 maxAge: 7*24*60*60*1000 // 7d
-            })
-
+            }).
             res.json({accesstoken})
+
 
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -53,13 +55,14 @@ const userCtrl = {
             const accesstoken = createAccessToken({id: user._id})
             const refreshtoken = createRefreshToken({id: user._id})
 
-            res.cookie('refreshtoken', refreshtoken, {
-                httpOnly: true,
-                path: '/user/refresh_token',
-                maxAge: 7*24*60*60*1000 // 7d
-            })
-
-            res.json({accesstoken})
+            res.
+                status(200).
+                cookie('refreshtoken', refreshtoken, {
+                    httpOnly: true,
+                    path: '/user/refresh_token',
+                    maxAge: 7*24*60*60*1000 // 7d
+                }).
+                res.json({accesstoken})
 
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -75,8 +78,8 @@ const userCtrl = {
     },
     refreshToken: (req, res) =>{
         try {
-            const rf_token = req.cookies.refreshtoken;
-            if(!rf_token) return res.status(400).json({msg: "Будь ласка авторизуйтеся"})
+            const rf_token = req.body.refreshtoken;
+            if(!rf_token) return res.json({})
 
             jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) =>{
                 if(err) return res.status(400).json({msg: "Будь ласка авторизуйтеся"})
@@ -87,7 +90,7 @@ const userCtrl = {
             })
 
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            console.error(err.message);
         }
         
     },
