@@ -27,16 +27,7 @@ const userCtrl = {
             const accesstoken = createAccessToken({id: newUser._id})
             const refreshtoken = createRefreshToken({id: newUser._id})
             
-            res.
-            status(200).
-            cookie('refreshtoken', refreshtoken, {
-                httpOnly: true,
-                path: '/user/refresh_token',
-                maxAge: 7*24*60*60*1000 // 7d
-            }).
-            json({accesstoken})
-
-
+            res.status(200).json({accesstoken, refreshtoken})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -55,14 +46,7 @@ const userCtrl = {
             const accesstoken = createAccessToken({id: user._id})
             const refreshtoken = createRefreshToken({id: user._id})
 
-            res.
-                status(200).
-                cookie('refreshtoken', refreshtoken, {
-                    httpOnly: true,
-                    path: '/user/refresh_token',
-                    maxAge: 7*24*60*60*1000 // 7d
-                }).
-                json({accesstoken})
+            res.status(200).json({accesstoken, refreshtoken})
 
         } catch (err) {
             return res.status(500).json({msg: err.message})
@@ -92,7 +76,6 @@ const userCtrl = {
         } catch (err) {
             console.error(err.message);
         }
-        
     },
     getUser: async (req, res) =>{
         try {
